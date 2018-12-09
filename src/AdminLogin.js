@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { PathBase, PathGetAllUsers } from './constants'
+import { PathUserApi, PathGetAllUsers } from './constants'
 
 class AdminLogin extends Component {
 
@@ -33,9 +33,9 @@ class AdminLogin extends Component {
   checkLogin(){
     console.log("here");
 
-    {this.props.displayPage(1)}
+    {this.props.displayPage(1)}  //does not go here
 
-    axios.get(PathBase+PathGetAllUsers).then(function (response){
+    axios.get(PathUserApi+PathGetAllUsers).then(function (response){
       var userRecords = response.data;
       for(var i=0; i<userRecords.length; i++){
         if(userRecords[i].username, userRecords[i].password){

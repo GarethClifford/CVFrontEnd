@@ -1,2 +1,5 @@
-export const PathBase = "localhost"
-export const PathGetAllUsers = "/something"
+export const PathUserApi = "localhost/user"
+export const PathGetAllUsers = "/getAllUsers"
+export const PathGetUser = "/getUser/"
+export const PathUserDeleteCv = "/deleteCv/"
+export const PathUserUpdateCv = "/updateCv/"
