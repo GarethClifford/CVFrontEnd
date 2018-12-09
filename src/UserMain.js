@@ -13,47 +13,9 @@ class UserMain extends Component {
       testString:[]
     }
     this.deleteButton = this.deleteButton.bind(this);
-    // this.getUserData = this.getUserData.bind(this);
-    // this.deleteCV = this.deleteCV.bind(this);
-    // this.updateCV = this.updateCV.bind(this);
   }
 
-  // deleteCV(event){
-  //   event.preventDefault();
-  //   var cvId = event.target.id;
-  //   axios.delete(PathUserApi + PathUserDeleteCv + cvId).then(function(response){
-  //     console.log(response);
-  //   });
-  // }
-  //
-  // updateCV(event){
-  //   event.preventDefault();
-  //   var cvId = event.target.id;
-  //   axios.put(PathUserApi + PathUserUpdateCv + cvId).then(function (response){
-  //     console.log(response);
-  //   });
-  // }
-  //
-  // getUserData(){ //gets user cvs and turns them into elements containing the cvobject with a delete and update button
-  //   var session = this;
-  //   axios.get(PathUserApi+PathGetUser + this.state.userId).then(function(response){
-  //     var cvs = response.data[0].CVObject
-  //     var cvList = cvs.map(function(cv){
-  //       return(
-  //         <div key={cv.id}>
-  //           <p>{cv.comments}</p>
-  //           <button id={cv.id} onClick={session.deleteCV} value="Delete"/>
-  //           <button id={cv.id} onClick={session.updateCV} value="Update"/>
-  //         </div>
-  //       );
-  //     });
-  //
-  //     this.setState({
-  //       storedCVs: cvList
-  //     });
-  //
-  //   });
-  // }
+
 
   deleteCv(id){
       axios.delete(PathUserApi + PathUserDeleteCv + id).then(function(response){
@@ -67,18 +29,15 @@ class UserMain extends Component {
     );
   }
 
+  updateCv(id){
+    axios.put(PathUserApi+PathUserUpdateCv+id).then(function(response){
+      console.log(response);
+    });
+  }
+
 
 
   render() {
-
-    // const LoadData = () =>{
-    //   return(
-    //     <div>
-    //       {this.state.storedCVs}
-    //     </div>
-    //   );
-    // }
-
     const BootstrapTable = () =>{
       return(
         <div>
