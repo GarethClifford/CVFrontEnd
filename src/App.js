@@ -36,7 +36,7 @@ class App extends Component {
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <br/><br/>
-            <p> Welcome to <b>Shrek's</b> CV library </p>
+            <p> Welcome <b>Shrek's</b> CV library </p>
             <div id='contentOfDiv'>
               <button className='btn btn-primary' onClick={this.onClickLogin}>Login</button>
             </div>

@@ -15,15 +15,6 @@ class AdminLogin extends Component {
     this.checkLogin = this.checkLogin.bind(this);
   }
 
-
-  oldlogin = () => {
-    if (document.getElementById('userName').value === 'alvin') {
-      window.alert("Sorry Alvin, the page is currently under construction, please try again later. So sorry please forgive me!")
-    } else {
-    window.alert("Username or password not found, please try again")
-    }
-  }
-
   onLoginClick(){
     var userInput = document.getElementById("usernameIn").value;
     var passInput = document.getElementById("passwordIn").value;
@@ -33,7 +24,7 @@ class AdminLogin extends Component {
   checkLogin(){
     console.log("here");
 
-    {this.props.displayPage(1)}  //does not go here
+    {this.props.displayPage(2)}  //does not go here
 
     axios.get(PathUserApi+PathGetAllUsers).then(function (response){
       var userRecords = response.data;

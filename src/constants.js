@@ -10,5 +10,6 @@ export const PathGetAdmin = "/getAdmin"
 export const PathAdminAddAdmin = "/addAdmin"
 export const PathAdminDeleteAdmin = "/deleteAdmin"
 export const PathAdminUpdateAdmin = "/updateAdmin"
+export const PathAdminFlagUser = "/flagUser/"
 
-export const PathAdminDeleteCv = "/deleteCv"
+export const PathAdminDeleteUser = "/deleteCv"

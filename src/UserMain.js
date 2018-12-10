@@ -16,7 +16,6 @@ class UserMain extends Component {
   }
 
 
-
   deleteCv(id){
       axios.delete(PathUserApi + PathUserDeleteCv + id).then(function(response){
         console.log(response);
@@ -36,7 +35,6 @@ class UserMain extends Component {
   }
 
 
-
   render() {
     const BootstrapTable = () =>{
       return(
@@ -50,7 +48,6 @@ class UserMain extends Component {
     }
 
     const TestData = () =>{
-
       const testString = this.state.testString.splice();
       testString.push("one");
       testString.push("two");
