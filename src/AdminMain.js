@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import { PathAdminApi, PathGetAdmin, PathAdminAddAdmin,
-  PathAdminDeleteUser, PathAdminDeleteAdmin, PathAdminUpdateAdmin,
-  PathAdminFlagUser } from './constants';
+import { AdminApi, GetAdmin, AdminAddAdmin,
+  AdminDeleteUser, AdminDeleteAdmin, AdminUpdateAdmin,
+  AdminFlagUser } from './constants';
 import AdminAddAccount from './AdminAddAccount.js';
 
 class AdminMain extends Component {
@@ -12,6 +12,7 @@ class AdminMain extends Component {
     super(props);
 
     this.state = {
+      adminId:this.props.adminId,
       isSuper:true,
       storedUsers: []
     }
@@ -27,7 +28,7 @@ class AdminMain extends Component {
 
   getAdmin(){
     var adminObj;
-    axios.get(PathAdminApi+PathGetAdmin).then(function(response){
+    axios.get(AdminApi+GetAdmin).then(function(response){
       console.log(response);
       adminObj = response;
     });
@@ -41,13 +42,13 @@ class AdminMain extends Component {
     var isSuperAdmin;
     var newAdmin = {"userName":userName, "password":password,
      "firstName":firstName, "lastName":lastName, "isSuperAdmin":isSuperAdmin}
-    axios.post(PathAdminApi+PathAdminAddAdmin, newAdmin).then(function (response){
+    axios.post(AdminApi+AdminAddAdmin, newAdmin).then(function (response){
       console.log(response);
     });
   }
 
   deleteAdmin(id){
-    axios.delete(PathAdminApi+PathAdminDeleteAdmin+id).then(function(response){
+    axios.delete(AdminApi+AdminDeleteAdmin+id).then(function(response){
       console.log(response);
     });
   }
@@ -60,7 +61,7 @@ class AdminMain extends Component {
   }
 
   flagUser(id){
-    axios.get(PathAdminApi+PathAdminFlagUser+id).then(function(response){
+    axios.get(AdminApi+AdminFlagUser+id).then(function(response){
       console.log(response);
     });
   }
@@ -72,7 +73,7 @@ class AdminMain extends Component {
   }
 
   deleteUser(id){
-    axios.delete(PathAdminApi+PathAdminDeleteUser+id).then(function(response){
+    axios.delete(AdminApi+AdminDeleteUser+id).then(function(response){
       console.log(response);
     });
   }

@@ -11,14 +11,22 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      displayPage: 0
+      displayPage: 0,
+      accountId:-1
     }
     this.changeDisplay = this.changeDisplay.bind(this);
     this.onClickLogin = this.onClickLogin.bind(this);
+    this.setAccountId = this.setAccountId.bind(this);
+    this.testMethod = this.testMethod.bind(this);
   }
 
   onClickLogin(){
-    ReactDOM.render(<AdminLogin displayPage={this.changeDisplay}/>, document.getElementById("contentOfDiv"));
+    ReactDOM.render(<AdminLogin displayPage={this.changeDisplay}
+      setAccountId={this.setAccountId}/>, document.getElementById("contentOfDiv"));
+  }
+
+  setAccountId(id){
+    this.setState({accountId:id});
   }
 
   changeDisplay(value){
@@ -27,9 +35,12 @@ class App extends Component {
     });
   }
 
+  testMethod(){
+    console.log("hello");
+  }
+
 
   render() {
-
     const LoginMain = () =>{
       return(
         <div>
@@ -49,8 +60,8 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.displayPage===0 && <LoginMain/>}
-        {this.state.displayPage===1 && <UserMain/>}
-        {this.state.displayPage===2 && <AdminMain/>}
+        {this.state.displayPage===1 && <UserMain userId={this.state.accountId}/>}
+        {this.state.displayPage===2 && <AdminMain adminId={this.state.accountId}/>}
       </div>
     );
 

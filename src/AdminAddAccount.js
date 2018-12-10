@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { PathAdminApi, PathGetAdmin, PathAdminAddAdmin, PathGetAllAdmins,
-  PathUserApi, PathGetAllUsers } from './constants'
+import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
+  UserApi, GetAllUsers } from './constants'
 
 class AdminAddAccount extends Component {
 
@@ -18,10 +18,10 @@ class AdminAddAccount extends Component {
     var session = this;
     var adminList = [];
     var userList = [];
-    axios.get(PathAdminApi+PathGetAllAdmins).then(function(response){
+    axios.get(AdminApi+GetAllAdmins).then(function(response){
       console.log(response);
       adminList = response.data;
-      axios.get(PathUserApi+PathGetAllUsers).then(function(response1){
+      axios.get(UserApi+GetAllUsers).then(function(response1){
         console.log(response1);
         userList = response1.data;
         var valid = true;
@@ -53,7 +53,7 @@ class AdminAddAccount extends Component {
     var isSuper = event.target[0].checked;
     var adminObj = {"userName":userName, "password":password, "firstName":firstName, "lastName":lastName, "email":email, "isSuperAdmin":isSuper};
     if(this.state.validUser===true){
-      axios.post(PathAdminApi+PathAdminAddAdmin, adminObj).then(function(response){
+      axios.post(AdminApi+AdminAddAdmin, adminObj).then(function(response){
         console.log(response);
       });
     } else{

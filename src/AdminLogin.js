@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { PathUserApi, PathGetAllUsers } from './constants'
+import { UserApi, GetAllUsers } from './constants'
 
 class AdminLogin extends Component {
 
@@ -8,33 +8,63 @@ class AdminLogin extends Component {
   constructor(props){
     super(props);
     this.state = {
-      loginState: 0
+      loginState:0
     }
-
-    this.onLoginClick = this.onLoginClick.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
-  }
-
-  onLoginClick(){
-    var userInput = document.getElementById("usernameIn").value;
-    var passInput = document.getElementById("passwordIn").value;
-    {this.checkLogin()}
+    this.checkLoginFromUsers = this.checkLoginFromUsers.bind(this);
+    this.checkLoginFromAdmins = this.checkLoginFromAdmins.bind(this);
   }
 
   checkLogin(){
-    console.log("here");
 
-    {this.props.displayPage(2)}  //does not go here
+    {this.state.loginState===0 && this.checkLoginFromUsers()}
+    {this.state.loginState===0 && this.checkLoginFromAdmins()}
 
-    axios.get(PathUserApi+PathGetAllUsers).then(function (response){
-      var userRecords = response.data;
-      for(var i=0; i<userRecords.length; i++){
-        if(userRecords[i].username, userRecords[i].password){
-          //this.props.displayPage(1)
+    if(this.state.loginState===1){
+      this.props.displayPage(1);
+    } else if (this.state.loginState===2) {
+      this.props.displayPage(2);
+    }else{
+      alert("wrong credentials");
+    }
+
+  }
+
+  //duplicate code. refactor
+  checkLoginFromAdmins(){
+    var userInput = document.getElementById("usernameIn").value;
+    var passInput = document.getElementById("passwordIn").value;
+    var session = this;
+    axios.get(AdminApi+GetAllAdmins).then(function (response){
+      var adminRecords = response.data;
+      for(var i=0; i<adminRecords.length; i++){
+        if(userInput === adminRecords[i].username){
+          if(passInput === adminRecords[i].password){
+              session.setState({loginState:2});
+              this.props.setAccountId(adminRecords[i].adminId);
+          }
         }
       }
     });
   }
+
+  checkLoginFromUsers(){
+    var userInput = document.getElementById("usernameIn").value;
+    var passInput = document.getElementById("passwordIn").value;
+    var session = this;
+    axios.get(UserApi+GetAllUsers).then(function (response){
+      var userRecords = response.data;
+      for(var i=0; i<userRecords.length; i++){
+        if(userInput === userRecords[i].username){
+          if(passInput === userRecords[i].password){
+              session.setState({loginState:1});
+              this.props.setAccountId(userRecords[i].userId);
+          }
+        }
+      }
+    });
+  }
+
 
   render() {
 
@@ -46,14 +76,14 @@ class AdminLogin extends Component {
           <br/>
           <input id="passwordIn" type = "password" placeholder = "Password" className ="form-control" style={{width:'200px'}} />
           <br/>
-          <button className="btn btn-success" onClick={this.onLoginClick}>Login</button>
+          <button className="btn btn-success" onClick={this.checkLogin}>Login</button>
         </div>
       )
     }
 
     return (
       <div>
-        {this.state.loginState===0 && <InputLoginDetails/>}
+        <InputLoginDetails/>
       </div>
     );
 

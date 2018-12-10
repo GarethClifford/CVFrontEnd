@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import { PathUserApi, PathGetUser, PathUserDeleteCv, PathUserUpdateCv } from './constants'
+import { UserApi, GetUser, UserDeleteCv, UserUpdateCv } from './constants'
 
 class UserMain extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      userId: 0, //obviously change this
-      storedCVs: [],
-      testString:[]
+      userId: this.props.userId,
+      userData: []
     }
     this.deleteButton = this.deleteButton.bind(this);
+    this.deleteCv = this.deleteCv.bind(this);
+    this.downloadFile = this.downloadFile.bind(this);
   }
 
-
-  deleteCv(id){
-      axios.delete(PathUserApi + PathUserDeleteCv + id).then(function(response){
-        console.log(response);
-      });
-  }
 
   deleteButton(cell,row){
     return (
@@ -28,41 +23,40 @@ class UserMain extends Component {
     );
   }
 
-  updateCv(id){
-    axios.put(PathUserApi+PathUserUpdateCv+id).then(function(response){
+  deleteCv(id){
+      axios.delete(UserApi + UserDeleteCv + id).then(function(response){
+        console.log(response);
+      });
+  }
+
+  downloadFile(cell,row){
+    axios.get(CvApi+CvGet+row.id).then(function(response){
       console.log(response);
+    });
+  }
+
+  componentWillMount(){
+    var session = this;
+    axios.get(UserApi+GetUser+this.state.userId).then(function(response){
+      console.log(response);
+      session.setState({
+        userData:response.data
+      });
     });
   }
 
 
   render() {
     const BootstrapTable = () =>{
+      //does not load comments
       return(
         <div>
-        <BootstrapTable data={this.state.storedCVs} hover striped search>
-        <TableHeaderColumn dataField='id' isKey={true}>ID</TableHeaderColumn>
+        <BootstrapTable data={this.state.userData.cvs} hover striped search>
+        <TableHeaderColumn dataField='cvId' isKey={true}>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='fileName'>Filename</TableHeaderColumn>
+        <TableHeaderColumn dataField='button' dataFormat={this.downloadFile}>Download</TableHeaderColumn>
         <TableHeaderColumn dataField='button' dataFormat={this.deleteButton}>Delete</TableHeaderColumn>
         </BootstrapTable>
-        </div>
-      );
-    }
-
-    const TestData = () =>{
-      const testString = this.state.testString.splice();
-      testString.push("one");
-      testString.push("two");
-
-      var testElement = testString.map((str) =>{
-        return(
-          <div>
-            <tr>{str}</tr>
-          </div>
-        );
-      });
-
-      return(
-        <div>
-          {testElement}
         </div>
       );
     }
@@ -70,7 +64,7 @@ class UserMain extends Component {
     return (
       <div>
         <h1>User Main Page</h1>
-        <TestData/>
+        <BootstrapTable/>
       </div>
     );
 
