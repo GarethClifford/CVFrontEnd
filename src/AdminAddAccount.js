@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { PathAdminApi, PathGetAdmin, PathAdminAddAdmin } from './constants'
+import { PathAdminApi, PathGetAdmin, PathAdminAddAdmin, PathGetAllAdmins,
+  PathUserApi, PathGetAllUsers } from './constants'
 
 class AdminAddAccount extends Component {
 
   constructor(props){
     super(props);
-
     this.state = {
       validUser: false
     }
-
     this.makeAdmin = this.makeAdmin.bind(this);
     this.checkUserExists = this.checkUserExists.bind(this);
   }
@@ -25,11 +24,20 @@ class AdminAddAccount extends Component {
       axios.get(PathUserApi+PathGetAllUsers).then(function(response1){
         console.log(response1);
         userList = response1.data;
+        var valid = true;
         for (var i = 0; i < adminList.length; i++){
           if(username === adminList[i].username){
-            //do
+            valid = false;
+            break;
           }
         }
+        for (var j = 0; j < userList.length; j++){
+          if(username === userList[j].username){
+            valid = false;
+            break;
+          }
+        }
+        this.setState({validUser:valid});
       });
     });
   }
@@ -37,17 +45,20 @@ class AdminAddAccount extends Component {
   makeAdmin(event){
     event.preventDefault();
     var userName = document.getElementById("usernameIN");
+    {this.checkUserExists(userName)};
     var password = document.getElementById("passwordIN");
     var firstName = document.getElementById("firstnameIN");
     var lastName = document.getElementById("lastnameIN");
     var email = document.getElementById("emailIN");
     var isSuper = event.target[0].checked;
-    var adminObj = {"userName":userName, "password":password, "firstName":firstName,
-                      "lastName":lastName, "email":email, "isSuperAdmin":isSuper};
-
-    axios.post(PathAdminApi+PathAdminAddAdmin, adminObj).then(function(response){
-      console.log(response);
-    });
+    var adminObj = {"userName":userName, "password":password, "firstName":firstName, "lastName":lastName, "email":email, "isSuperAdmin":isSuper};
+    if(this.state.validUser===true){
+      axios.post(PathAdminApi+PathAdminAddAdmin, adminObj).then(function(response){
+        console.log(response);
+      });
+    } else{
+        alert("bad user");
+    }
   }
 
 
