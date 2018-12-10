@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { AdminApi, GetAdmin, AdminAddAdmin,
   AdminDeleteUser, AdminDeleteAdmin, AdminUpdateAdmin,
-  AdminFlagUser } from './constants';
+  AdminFlagUser, UserApi, DeleteUser } from './constants';
 import AdminAddAccount from './AdminAddAccount.js';
 
 class AdminMain extends Component {
@@ -28,7 +28,7 @@ class AdminMain extends Component {
 
   getAdmin(){
     var adminObj;
-    axios.get(AdminApi+GetAdmin).then(function(response){
+    axios.get(AdminApi+GetAdmin+this.state.adminId).then(function(response){
       console.log(response);
       adminObj = response;
     });
@@ -73,7 +73,7 @@ class AdminMain extends Component {
   }
 
   deleteUser(id){
-    axios.delete(AdminApi+AdminDeleteUser+id).then(function(response){
+    axios.delete(UserApi+DeleteUser+id).then(function(response){
       console.log(response);
     });
   }
@@ -110,6 +110,8 @@ class AdminMain extends Component {
 
     return (
       <div>
+        <BootstrapTable/>
+      //menu. display table or add account. render from choice. check adminaddaccount
         <AdminAddAccount/>
       </div>
     );

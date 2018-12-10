@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import { UserApi, GetUser, UserDeleteCv, UserUpdateCv } from './constants'
+import { UserApi, GetUser, CvApi, CvGet, UserDeleteCv, UserUpdateCv } from './constants'
 
 class UserMain extends Component {
 

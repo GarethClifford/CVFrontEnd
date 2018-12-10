@@ -37,7 +37,7 @@ class AdminAddAccount extends Component {
             break;
           }
         }
-        this.setState({validUser:valid});
+        session.setState({validUser:valid});
       });
     });
   }

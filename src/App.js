@@ -15,14 +15,7 @@ class App extends Component {
       accountId:-1
     }
     this.changeDisplay = this.changeDisplay.bind(this);
-    this.onClickLogin = this.onClickLogin.bind(this);
     this.setAccountId = this.setAccountId.bind(this);
-    this.testMethod = this.testMethod.bind(this);
-  }
-
-  onClickLogin(){
-    ReactDOM.render(<AdminLogin displayPage={this.changeDisplay}
-      setAccountId={this.setAccountId}/>, document.getElementById("contentOfDiv"));
   }
 
   setAccountId(id){
@@ -35,10 +28,6 @@ class App extends Component {
     });
   }
 
-  testMethod(){
-    console.log("hello");
-  }
-
 
   render() {
     const LoginMain = () =>{
@@ -49,7 +38,7 @@ class App extends Component {
             <br/><br/>
             <p> Welcome <b>Shrek's</b> CV library </p>
             <div id='contentOfDiv'>
-              <button className='btn btn-primary' onClick={this.onClickLogin}>Login</button>
+              <AdminLogin displayPage={this.changeDisplay} setAccountId={this.setAccountId}/>
             </div>
           </header>
         </div>
