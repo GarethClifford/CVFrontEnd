@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {AdminApi, GetAllAdmins } from './constants'
 
-class AdminLogin extends Component {
+class Login extends Component {
 
 
   constructor(props){
@@ -103,4 +103,4 @@ class AdminLogin extends Component {
 
 
 }
-export default AdminLogin;
+export default Login;

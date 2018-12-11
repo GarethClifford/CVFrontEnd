@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link, Route, Redirect } from 'react-router-dom'
 import logo from './logo2.png';
 import './Home.css';
-import AdminLogin from './AdminLogin.js';
+import Login from './Login.js';
 import UserMain from './UserMain.js';
 import AdminMain from './AdminMain.js';
 
@@ -36,21 +37,32 @@ class Home extends Component {
             <br/><br/>
             <p> Welcome to <b>Shreks</b> CV library </p>
             <div id='contentOfDiv'>
-              <AdminLogin displayPage={this.changeDisplay} setAccountId={this.setAccountId}/>
+              <Login displayPage={this.changeDisplay} setAccountId={this.setAccountId}/>
             </div>
           </header>
         </div>
       );
     }
 
+    const UserLink = () => (
+      <Redirect to='/u'/>
+    )
 
-    return (
-      <div className="Home">
-        {this.state.displayPage===0 && <LoginMain/>}
-        {this.state.displayPage===1 && <UserMain userId={this.state.accountId}/>}
-        {this.state.displayPage===2 && <AdminMain adminId={this.state.accountId}/>}
-      </div>
-    );
+    if(this.state.displayPage===0){
+      return (
+        <div className="Home">
+          <LoginMain/>
+        </div>
+      );
+    }else if (this.state.displayPage===1) {
+      return (
+        <Redirect to='/u'/>
+      );
+    }else {
+      return(
+        <Redirect to='/a'/>
+      );
+    }
 
   }
 }
