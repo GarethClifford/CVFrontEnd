@@ -18,7 +18,7 @@ class AdminLogin extends Component {
 
   checkLogin(){
     {this.state.loginState===0 && this.checkLoginFromUsers()}
-    console.log(this.state.loginState);
+
     if(this.state.loginState===0){
       this.checkLoginFromAdmins()
     }
@@ -61,8 +61,8 @@ class AdminLogin extends Component {
     var userInput = document.getElementById("usernameIn").value;
     var passInput = document.getElementById("passwordIn").value;
     var session = this;
-    console.log(userInput+passInput);
     axios.get('http://localhost:8081/user/getall').then(function (response){
+      console.log(response);
       var userRecords = response.data;
       for(var i=0; i<userRecords.length; i++){
         if(userInput === userRecords[i].username){
@@ -75,7 +75,6 @@ class AdminLogin extends Component {
         }
       }
     });
-    console.log("exit");
   }
 
 

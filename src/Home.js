@@ -18,18 +18,11 @@ class Home extends Component {
   }
 
   setAccountId(id){
-    console.log("setaccount");
     this.setState({accountId:id});
-    console.log(this.state.accountId);
   }
 
   changeDisplay(value){
-    console.log("changedisplay1:" + value);
-    console.log(this.state.displayPage);
-    this.setState({
-      displayPage:value
-    });
-    console.log(this.state.displayPage);
+    this.setState({displayPage:value});
   }
 
 

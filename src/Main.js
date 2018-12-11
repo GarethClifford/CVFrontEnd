@@ -7,7 +7,7 @@ import UserMain from './UserMain.js'
 const Main = () => (
   <main>
     <Switch>
-      <Route exact path='/' component={Home}/>
+      <Route exact path='/login' component={Home}/>
       <Route exact path='/u' component={UserMain}/>
       <Route exact path='/a' component={AdminMain}/>
     </Switch>
