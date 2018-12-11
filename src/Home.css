@@ -1,13 +1,13 @@
-.App {
+.Home {
   text-align: center;
 }
 
-.App-logo {
+.Home-logo {
   animation: App-logo-spin infinite 1000s linear;
   height: 40vmin;
 }
 
-.App-header {
+.Home-header {
   background-color: 	#FFA500;
   min-height: 100vh;
   display: flex;
