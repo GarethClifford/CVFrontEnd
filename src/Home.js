@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo2.png';
 import './Home.css';
-import ReactDOM from 'react-dom';
 import AdminLogin from './AdminLogin.js';
 import UserMain from './UserMain.js';
 import AdminMain from './AdminMain.js';
@@ -11,7 +10,7 @@ class Home extends Component {
   constructor(props){
     super(props);
     this.state = {
-      displayPage:1,
+      displayPage:0,
       accountId:-1
     }
     this.changeDisplay = this.changeDisplay.bind(this);
@@ -27,7 +26,9 @@ class Home extends Component {
   changeDisplay(value){
     console.log("changedisplay1:" + value);
     console.log(this.state.displayPage);
-    this.state.displayPage=value;
+    this.setState({
+      displayPage:value
+    });
     console.log(this.state.displayPage);
   }
 
@@ -40,7 +41,7 @@ class Home extends Component {
           <header className="Home-header">
             <img src={logo} className="Home-logo" alt="logo" />
             <br/><br/>
-            <p> Welcome <b>Shrek's</b> CV library </p>
+            <p> Welcome to <b>Shreks</b> CV library </p>
             <div id='contentOfDiv'>
               <AdminLogin displayPage={this.changeDisplay} setAccountId={this.setAccountId}/>
             </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { UserApi, GetAllUsers, AdminApi, GetAllAdmins } from './constants'
+import {AdminApi, GetAllAdmins } from './constants'
 
 class AdminLogin extends Component {
 
@@ -13,7 +13,7 @@ class AdminLogin extends Component {
     this.checkLogin = this.checkLogin.bind(this);
     this.checkLoginFromUsers = this.checkLoginFromUsers.bind(this);
     this.checkLoginFromAdmins = this.checkLoginFromAdmins.bind(this);
-    this.successfulLogin = this.successfulLogin.bind(this);
+    this.successfullLogin = this.successfullLogin.bind(this);
   }
 
   checkLogin(){
@@ -25,7 +25,7 @@ class AdminLogin extends Component {
 
   }
 
-  successfulLogin(){
+  successfullLogin(){
     if(this.state.loginState===1){
       this.props.displayPage(1);
     } else if (this.state.loginState===2) {
@@ -49,7 +49,7 @@ class AdminLogin extends Component {
           if(passInput === adminRecords[i].password){
               session.setState({loginState:2}); //call displayPage directly
               session.props.setAccountId(adminRecords[i].adminId);
-              {this.successfulLogin()}
+              {this.successfullLogin()}
           }
         }
       }
@@ -63,21 +63,13 @@ class AdminLogin extends Component {
     var session = this;
     console.log(userInput+passInput);
     axios.get('http://localhost:8081/user/getall').then(function (response){
-      console.log("in");
       var userRecords = response.data;
-      console.log(userRecords);
       for(var i=0; i<userRecords.length; i++){
-        console.log(userRecords[i].username);
-        console.log(userInput===userRecords[i].username);
         if(userInput === userRecords[i].username){
-          console.log(userInput+userRecords[i].password);
-          console.log(passInput===userRecords[i].password);
           if(passInput === userRecords[i].password){
-            console.log("yes");
             session.setState({loginState:1});
-            console.log(session.state.loginState);
             session.props.setAccountId(userRecords[i].id);
-            {session.successfulLogin()}
+            {session.successfullLogin()}
             break;
           }
         }
