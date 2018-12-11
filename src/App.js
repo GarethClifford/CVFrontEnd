@@ -11,7 +11,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      displayPage: 0,
+      displayPage:1,
       accountId:-1
     }
     this.changeDisplay = this.changeDisplay.bind(this);
@@ -19,14 +19,18 @@ class App extends Component {
   }
 
   setAccountId(id){
+    console.log("setaccount");
     this.setState({accountId:id});
+    console.log(this.state.accountId);
   }
 
   changeDisplay(value){
-    this.setState({
-      displayPage: value
-    });
+    console.log("changedisplay1:" + value);
+    console.log(this.state.displayPage);
+    this.state.displayPage=value;
+    console.log(this.state.displayPage);
   }
+
 
 
   render() {

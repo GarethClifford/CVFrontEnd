@@ -110,7 +110,6 @@ class AdminMain extends Component {
 
     return (
       <div>
-        <BootstrapTable/>
       //menu. display table or add account. render from choice. check adminaddaccount
         <AdminAddAccount/>
       </div>

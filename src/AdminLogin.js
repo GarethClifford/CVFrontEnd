@@ -17,14 +17,11 @@ class AdminLogin extends Component {
   }
 
   checkLogin(){
-
     {this.state.loginState===0 && this.checkLoginFromUsers()}
     console.log(this.state.loginState);
     if(this.state.loginState===0){
       this.checkLoginFromAdmins()
     }
-
-
 
   }
 
@@ -79,8 +76,9 @@ class AdminLogin extends Component {
             console.log("yes");
             session.setState({loginState:1});
             console.log(session.state.loginState);
-            session.props.setAccountId(userRecords[i].userId);
+            session.props.setAccountId(userRecords[i].id);
             {session.successfulLogin()}
+            break;
           }
         }
       }

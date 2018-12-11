@@ -35,15 +35,15 @@ class UserMain extends Component {
     });
   }
 
-  componentWillMount(){
-    var session = this;
-    axios.get(UserApi+GetUser+this.state.userId).then(function(response){
-      console.log(response);
-      session.setState({
-        userData:response.data
-      });
-    });
-  }
+  // componentWillMount(){
+  //   var session = this;
+  //   axios.get(UserApi+GetUser+this.state.userId).then(function(response){
+  //     console.log(response);
+  //     session.setState({
+  //       userData:response.data
+  //     });
+  //   });
+  // }
 
 
   render() {
