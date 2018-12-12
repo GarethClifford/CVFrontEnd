@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { AdminApi, GetAdmin, AdminAddAdmin, AdminDeleteAdmin,
-  AdminFlagUser, UserApi, DeleteUser } from './constants';
+  AdminFlagUser, UserApi, GetAllUsers, DeleteUser } from './constants';
 import AdminAddAccount from './AdminAddAccount.js';
 
 class AdminMain extends Component {
@@ -12,7 +12,9 @@ class AdminMain extends Component {
     this.state = {
       adminId:this.props.adminId,
       isSuper:true,
-      storedUsers: []
+      storedUsers: [],
+      userElements:[],
+      loaded:false
     }
 
     this.getAdmin = this.getAdmin.bind(this);
@@ -21,6 +23,8 @@ class AdminMain extends Component {
     this.deleteButton = this.deleteButton.bind(this);
     this.flagUser = this.flagUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.getUserData = this.getUserData.bind(this);
+    this.generateUserDataElements = this.generateUserDataElements.bind(this);
   }
 
 
@@ -76,19 +80,83 @@ class AdminMain extends Component {
     });
   }
 
+  getUserData(){
+    console.log("here");
+    var session = this;
+    console.log("here");
+    if(this.state.loaded === false){
+      axios.get(UserApi+GetAllUsers).then(function(response){
+        console.log(response);
+
+        session.setState({loaded:true,storedUsers:response.data[0]});
+        // session.setState({loaded:true})
+        console.log("does it store users: "+this.state.storedUsers);
+        var stored = this.state.storedUsers;
+        var userElements = stored.map(function(user){
+          return (
+              <tr key={user.id}>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.email}</td>
+                <td>{user.flagged}</td>
+              </tr>
+          );
+        });
+        this.setState({
+          userElements:userElements,
+          loaded:true
+        });
+        console.log("1: "+this.state.storedUsers);
+        console.log("2: "+this.state.userElements);
+      });
+    }
+  }
+
+  generateUserDataElements(){
+    console.log("method called");
+    var stored = this.state.storedUsers;
+    var userElements = stored.map(function(user){
+      return (
+          <tr key={user.id}>
+            <td>{user.firstName}</td>
+            <td>{user.lastName}</td>
+            <td>{user.email}</td>
+            <td>{user.flagged}</td>
+          </tr>
+      );
+    });
+    this.setState({
+      userElements:userElements,
+      loaded:true
+    });
+    console.log("1: "+this.state.storedUsers);
+    console.log("2: "+this.state.userElements);
+  }
+
   render() {
-    const Main = () =>{
+    const UserData = () =>{
       return(
         <div>
-          <h1>Admin Main Page</h1>
+          <table>
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Flagged</th>
+            </tr>
+            {this.state.userElements}
+          </tbody>
+          </table>
         </div>
       );
     }
-
+    {this.state.loaded===false && this.getUserData()}
     return (
+      //should load AdminAddAccount as well
       <div>
-      //menu. display table or add account. render from choice. check adminaddaccount
-        <AdminAddAccount/>
+        <UserData/>
       </div>
     );
 

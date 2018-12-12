@@ -1,4 +1,4 @@
-export const UserApi = "localhost:8081/user" //#
+export const UserApi = "http://localhost:8081/user" //#
 export const UserAdd = "/create"  //#
 export const GetAllUsers = "/getall" //''
 export const GetUser = "/get/" //''
@@ -6,7 +6,7 @@ export const DeleteUser = "/delete/"
 export const UserDeleteCv = "/deleteUserAccount/{userId}"
 export const UserUpdateCv = "/{userId}/{userName}/{password}"
 
-export const AdminApi = "localhost:8084/admin" //#
+export const AdminApi = "http://localhost:8084/admin" //#
 export const GetAllAdmins = "/getall" //#
 export const GetAdmin = "/get/" //#
 export const AdminAddAdmin = "/create" //#
