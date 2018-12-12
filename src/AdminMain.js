@@ -127,10 +127,12 @@ class AdminMain extends Component {
       );
     }
     {this.getUserData()}
-    
+
     return (
-      //should load AdminAddAccount as well
-      <UserData/>
+      <div>
+        <UserData/>
+        <AdminAddAccount/>
+      </div>
     );
 
   }
