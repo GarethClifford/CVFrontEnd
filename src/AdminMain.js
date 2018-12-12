@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { AdminApi, GetAdmin, AdminAddAdmin, AdminDeleteAdmin,
   AdminFlagUser, UserApi, GetAllUsers, DeleteUser } from './constants';
+
 import AdminAddAccount from './AdminAddAccount.js';
 
 class AdminMain extends Component {
@@ -105,7 +106,6 @@ class AdminMain extends Component {
     }
   }
 
-
   render() {
     const UserData = () =>{
       return(
@@ -130,6 +130,7 @@ class AdminMain extends Component {
     return (
       <div>
         <UserData/>
+
         <AdminAddAccount/>
       </div>
     );
