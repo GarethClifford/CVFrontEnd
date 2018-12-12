@@ -8,7 +8,8 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
     constructor(props){
       super(props);
       this.state = {
-        validUser: false
+        validUser: false,
+        adminObb: []
       }
       this.makeAdmin = this.makeAdmin.bind(this);
       this.checkUserExists = this.checkUserExists.bind(this);
@@ -21,15 +22,10 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
       var session = this;
       var adminList = [];
       var userList = [];
-      console.log("asd " + username);
       axios.get(AdminApi+GetAllAdmins).then(function(response){
-        // console.log(response);
         adminList = response.data;
         axios.get(UserApi+GetAllUsers).then(function(response1){
-          // console.log(response1);
           userList = response1.data;
-          console.log("call");
-          console.log(username + ".." + adminList + ".." + userList);
           var dbColl = [];
           dbColl.push(adminList);
           dbColl.push(userList);
@@ -40,25 +36,17 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
 
 
   checkUsername(username, adminList, userList){
-    console.log(username + ".." + adminList + ".." + userList);
     var adminWithThatUsernameExists = this.checkInDB(username, adminList);
     var userWithThatUsernameExists = this.checkInDB(username, userList);
-
-    console.log(adminWithThatUsernameExists + ".." + userWithThatUsernameExists);
     if(adminWithThatUsernameExists || userWithThatUsernameExists){
       this.setState({validUser:false});
-      // return true;
     }else{
       this.setState({validUser:true});
-      // return false;
     }
-
-    console.log(this.state.validUser);
     this.addAccount()
   }
 
   checkInDB(username, resultset){
-    console.log("checking");
     for (var i = 0; i < resultset.length; i++){
       if(username === resultset[i].username){
         return true;
@@ -68,23 +56,14 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
   }
 
 
-  addAccount(adminObj){
-    var username = document.getElementById("usernameIN").value;
-    var password = document.getElementById("passwordIN").value;
-    var firstName = document.getElementById("firstnameIN").value;
-    var lastName = document.getElementById("lastnameIN").value;
-    // var email = document.getElementById("emailIN").value;
-    var isSuper = document.getElementById("UAradio").target[0].checked;
-
-    var adminObj = {"username":username, "password":password, "firstName":firstName, "lastName":lastName, "isSuperAdmin":isSuper};
-    console.log(adminObj);
+  addAccount(){
     if(this.state.validUser===true){
-      axios.post(AdminApi+AdminAddAdmin, adminObj).then(function(response){
-        console.log("posted");
+      axios.post(AdminApi+AdminAddAdmin, this.state.adminObb)
+      .then(function(response){
         console.log(response);
       });
     }else{
-      console.log("bad user");
+      alert("bad user");
     }
   }
 
@@ -93,19 +72,23 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
   makeAdmin(event){
     event.preventDefault();
     var username = document.getElementById("usernameIN").value;
+    var password = document.getElementById("passwordIN").value;
+    var firstName = document.getElementById("firstnameIN").value;
+    var lastName = document.getElementById("lastnameIN").value;
+    var isSuper = document.getElementById("isAdmin").checked;
+    var adminObj = {"username":username, "password":password, "firstName":firstName, "lastName":lastName, "superAdmin":isSuper};
+    this.setState({adminObb:adminObj});
     {this.checkUserExists(username)}
   }
-
-
 
     render() {
 
       const AddAccountForm = () =>{
         return(
           <form>
-            <div id="UAradio" className="radio">
+            <div className="radio">
               <label>
-                <input type="radio" value="Admin" name="rank"/>
+                <input id="isAdmin" type="radio" value="Admin" name="rank"/>
                 Admin
               </label>
               <label>

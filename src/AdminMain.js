@@ -79,7 +79,6 @@ class AdminMain extends Component {
   }
 
   getUserData(){
-    console.log("here");
     var session = this;
     var resultset;
     if(this.state.loaded === false){
