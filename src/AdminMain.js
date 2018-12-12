@@ -83,31 +83,27 @@ class AdminMain extends Component {
   getUserData(){
     console.log("here");
     var session = this;
-    console.log("here");
+    var resultset;
     if(this.state.loaded === false){
       axios.get(UserApi+GetAllUsers).then(function(response){
         console.log(response);
+        resultset = response.data;
 
-        session.setState({loaded:true,storedUsers:response.data[0]});
-        // session.setState({loaded:true})
-        console.log("does it store users: "+this.state.storedUsers);
-        var stored = this.state.storedUsers;
-        var userElements = stored.map(function(user){
+        var userElements = resultset.map(function(user){
           return (
               <tr key={user.id}>
+                <td>{user.id}</td>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
                 <td>{user.email}</td>
-                <td>{user.flagged}</td>
               </tr>
           );
         });
-        this.setState({
+
+        session.setState({
           userElements:userElements,
           loaded:true
         });
-        console.log("1: "+this.state.storedUsers);
-        console.log("2: "+this.state.userElements);
       });
     }
   }
@@ -116,8 +112,10 @@ class AdminMain extends Component {
     console.log("method called");
     var stored = this.state.storedUsers;
     var userElements = stored.map(function(user){
+      console.log(user.id + user.firstName + user.lastName + user.email + user.flagged);
       return (
           <tr key={user.id}>
+            <td>{user.id}</td>
             <td>{user.firstName}</td>
             <td>{user.lastName}</td>
             <td>{user.email}</td>
@@ -126,8 +124,7 @@ class AdminMain extends Component {
       );
     });
     this.setState({
-      userElements:userElements,
-      loaded:true
+      userElements:userElements
     });
     console.log("1: "+this.state.storedUsers);
     console.log("2: "+this.state.userElements);
@@ -152,11 +149,22 @@ class AdminMain extends Component {
         </div>
       );
     }
-    {this.state.loaded===false && this.getUserData()}
+    {this.getUserData()}
     return (
       //should load AdminAddAccount as well
       <div>
-        <UserData/>
+      <table>
+      <tbody>
+        <tr>
+          <th>ID</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>Flagged</th>
+        </tr>
+        {this.state.userElements}
+      </tbody>
+      </table>
       </div>
     );
 
