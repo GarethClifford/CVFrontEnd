@@ -12,7 +12,6 @@ class AdminMain extends Component {
     this.state = {
       adminId:this.props.adminId,
       isSuper:true,
-      storedUsers: [],
       userElements:[],
       loaded:false
     }
@@ -24,7 +23,6 @@ class AdminMain extends Component {
     this.flagUser = this.flagUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
     this.getUserData = this.getUserData.bind(this);
-    this.generateUserDataElements = this.generateUserDataElements.bind(this);
   }
 
 
@@ -108,27 +106,6 @@ class AdminMain extends Component {
     }
   }
 
-  generateUserDataElements(){
-    console.log("method called");
-    var stored = this.state.storedUsers;
-    var userElements = stored.map(function(user){
-      console.log(user.id + user.firstName + user.lastName + user.email + user.flagged);
-      return (
-          <tr key={user.id}>
-            <td>{user.id}</td>
-            <td>{user.firstName}</td>
-            <td>{user.lastName}</td>
-            <td>{user.email}</td>
-            <td>{user.flagged}</td>
-          </tr>
-      );
-    });
-    this.setState({
-      userElements:userElements
-    });
-    console.log("1: "+this.state.storedUsers);
-    console.log("2: "+this.state.userElements);
-  }
 
   render() {
     const UserData = () =>{
@@ -150,22 +127,10 @@ class AdminMain extends Component {
       );
     }
     {this.getUserData()}
+    
     return (
       //should load AdminAddAccount as well
-      <div>
-      <table>
-      <tbody>
-        <tr>
-          <th>ID</th>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>Email</th>
-          <th>Flagged</th>
-        </tr>
-        {this.state.userElements}
-      </tbody>
-      </table>
-      </div>
+      <UserData/>
     );
 
   }
