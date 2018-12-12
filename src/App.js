@@ -11,7 +11,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      displayPage:1,
+      displayPage:0,
       accountId:-1
     }
     this.changeDisplay = this.changeDisplay.bind(this);

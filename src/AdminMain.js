@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { AdminApi, GetAdmin, AdminAddAdmin,
   AdminDeleteUser, AdminDeleteAdmin, AdminUpdateAdmin,
   AdminFlagUser, UserApi, DeleteUser } from './constants';
@@ -87,30 +86,9 @@ class AdminMain extends Component {
       );
     }
 
-    const BootstrapTable = () =>{
-      const DeleteColumn = () =>{
-        return(
-          <TableHeaderColumn dataField='button' dataFormat={this.deleteButton}>Delete user</TableHeaderColumn>
-        );
-      }
-      return(
-        <div>
-          <BootstrapTable data={this.state.storedUsers} hover striped search>
-          <TableHeaderColumn dataField='id' isKey={true}>ID</TableHeaderColumn>
-          <TableHeaderColumn dataField='firstName'>Firstname</TableHeaderColumn>
-          <TableHeaderColumn dataField='lastName'>Lastname</TableHeaderColumn>
-          <TableHeaderColumn dataField='CVObject'>CV</TableHeaderColumn>
-          <TableHeaderColumn dataField='flagged'>Flagged</TableHeaderColumn>
-          {this.state.isSuper && <DeleteColumn/>}
-          <TableHeaderColumn dataField='button' dataFormat={this.flagUser}>Flag trainee</TableHeaderColumn>
-          </BootstrapTable>
-        </div>
-      );
-    }
 
     return (
       <div>
-      //menu. display table or add account. render from choice. check adminaddaccount
         <AdminAddAccount/>
       </div>
     );
