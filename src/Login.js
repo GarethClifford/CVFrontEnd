@@ -13,6 +13,7 @@ class Login extends Component {
     this.checkLogin = this.checkLogin.bind(this);
     this.checkLoginFromUsers = this.checkLoginFromUsers.bind(this);
     this.checkLoginFromAdmins = this.checkLoginFromAdmins.bind(this);
+    this.getFormInput = this.getFormInput.bind(this);
   }
 
   checkLogin(){
@@ -25,47 +26,43 @@ class Login extends Component {
   }
 
 
-  //duplicate code. refactor
   checkLoginFromAdmins(){
-    console.log("a");
-    var userInput = document.getElementById("usernameIn").value;
-    var passInput = document.getElementById("passwordIn").value;
     var session = this;
     axios.get(AdminApi+GetAllAdmins).then(function (response){
-      console.log(response);
-      var adminRecords = response.data;
-      for(var i=0; i<adminRecords.length; i++){
-        if(userInput === adminRecords[i].userName){
-          if(passInput === adminRecords[i].password){
-            session.props.setAccountId(adminRecords[i].id);
-            session.props.displayPage(2);
-            break;
-          }
-        }
-      }
+      console.log(response.data);
+      session.validateCredentials(response.data, 1);
     });
   }
 
   checkLoginFromUsers(){
-    console.log("u");
-    var userInput = document.getElementById("usernameIn").value;
-    var passInput = document.getElementById("passwordIn").value;
     var session = this;
     axios.get(UserApi+GetAllUsers).then(function (response){
       console.log(response);
-      var userRecords = response.data;
-      for(var i=0; i<userRecords.length; i++){
-        if(userInput === userRecords[i].username){
-          if(passInput === userRecords[i].password){
-            session.props.setAccountId(userRecords[i].id);
-            session.props.displayPage(1);
-            break;
-          }
-        }
-      }
+      session.validateCredentials(response.data, 0);
     });
   }
 
+  validateCredentials(records, userOrAdmin){
+    var input = this.getFormInput();
+    for(var i=0; i<records.length; i++){
+      if(input[0] === records[i].username){
+        if(input[1] === records[i].password){
+          this.props.setAccountId(records[i].id);
+          this.props.displayPage(userOrAdmin===0 ? 1 : 2);
+        }
+      }
+    }
+  }
+
+  getFormInput(){
+    var userInput = document.getElementById("usernameIn").value;
+    var passInput = document.getElementById("passwordIn").value;
+    var input = [];
+    input.push(userInput);
+    input.push(passInput);
+    console.log(input);
+    return input;
+  }
 
   render() {
 
