@@ -36,7 +36,6 @@ class UserMain extends Component {
 
 
   render() {
-
     return (
       <div>
         <h1>User Main Page</h1>

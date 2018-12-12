@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { AdminApi, GetAdmin, AdminAddAdmin,
-  AdminDeleteUser, AdminDeleteAdmin, AdminUpdateAdmin,
-  AdminFlagUser, UserApi, DeleteUser } from './constants';
+import { AdminApi, GetAdmin, AdminAddAdmin, AdminDeleteAdmin,
+  AdminFlagUser, UserApi, GetAllUsers, DeleteUser } from './constants';
+
 import AdminAddAccount from './AdminAddAccount.js';
 
 class AdminMain extends Component {
@@ -13,7 +13,8 @@ class AdminMain extends Component {
     this.state = {
       adminId:this.props.adminId,
       isSuper:true,
-      storedUsers: []
+      userElements:[],
+      loaded:false
     }
 
     this.getAdmin = this.getAdmin.bind(this);
@@ -22,6 +23,7 @@ class AdminMain extends Component {
     this.deleteButton = this.deleteButton.bind(this);
     this.flagUser = this.flagUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.getUserData = this.getUserData.bind(this);
   }
 
 
@@ -77,18 +79,58 @@ class AdminMain extends Component {
     });
   }
 
+  getUserData(){
+    var session = this;
+    var resultset;
+    if(this.state.loaded === false){
+      axios.get(UserApi+GetAllUsers).then(function(response){
+        console.log(response);
+        resultset = response.data;
+
+        var userElements = resultset.map(function(user){
+          return (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.email}</td>
+              </tr>
+          );
+        });
+
+        session.setState({
+          userElements:userElements,
+          loaded:true
+        });
+      });
+    }
+  }
+
   render() {
-    const Main = () =>{
+    const UserData = () =>{
       return(
         <div>
-          <h1>Admin Main Page</h1>
+          <table>
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Flagged</th>
+            </tr>
+            {this.state.userElements}
+          </tbody>
+          </table>
         </div>
       );
     }
-
+    {this.getUserData()}
 
     return (
       <div>
+        <UserData/>
+
         <AdminAddAccount/>
       </div>
     );
