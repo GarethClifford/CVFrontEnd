@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
-  UserApi, GetAllUsers } from './constants'
+import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins, UserApi, GetAllUsers } from './constants'
 
 class AdminAddAccount extends Component {
 
@@ -24,23 +23,40 @@ class AdminAddAccount extends Component {
       axios.get(UserApi+GetAllUsers).then(function(response1){
         console.log(response1);
         userList = response1.data;
-        var valid = true;
-        for (var i = 0; i < adminList.length; i++){
-          if(username === adminList[i].username){
-            valid = false;
-            break;
-          }
-        }
-        for (var j = 0; j < userList.length; j++){
-          if(username === userList[j].username){
-            valid = false;
-            break;
-          }
-        }
-        session.setState({validUser:valid});
+        this.checkAdmin(username);
       });
     });
   }
+
+  
+checkAdmin = (username) => {
+  var session = this;
+  var adminList = [];
+  var userList = [];
+  var valid = true;
+  this.adminvalid(username, adminList);
+  this.userValid(username, userList)
+  session.setState({validUser:valid});
+}
+
+adminValid = (username, adminList) => {
+    var valid = true;
+    for (var i = 0; i < adminList.length; i++){
+    if(username === adminList[i].username){
+      valid = false;
+      break;
+    }
+  }
+}
+userValid = (username, userList) => {
+    var valid = true;
+    for (var j = 0; j < userList.length; j++){
+      if(username === userList[j].username){
+        valid = false;
+        break;
+      }
+    }
+}
 
   makeAdmin(event){
     event.preventDefault();
