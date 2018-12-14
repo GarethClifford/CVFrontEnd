@@ -16,22 +16,23 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
       this.checkUsername = this.checkUsername.bind(this);
       this.checkInDB = this.checkInDB.bind(this);
       this.addAccount = this.addAccount.bind(this);
+      // this.settingTheState = this.settingTheState.bind(this);
     }
 
     checkUserExists(username){
       var session = this;
       var adminList = [];
       var userList = [];
+      var dbColl = [];
       axios.get(AdminApi+GetAllAdmins).then(function(response){
         adminList = response.data;
-        axios.get(UserApi+GetAllUsers).then(function(response1){
-          userList = response1.data;
-          var dbColl = [];
-          dbColl.push(adminList);
-          dbColl.push(userList);
-          session.checkUsername(username, adminList, userList);
-        });
       });
+      axios.get(UserApi+GetAllUsers).then(function(response1){
+        userList = response1.data;
+      });
+      dbColl.push(adminList);
+      dbColl.push(userList);
+      session.checkUsername(username, adminList, userList);
     }
 
 
@@ -58,7 +59,7 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
 
   addAccount(){
     if(this.state.validUser===true){
-      axios.post(AdminApi+AdminAddAdmin, this.state.adminObb)
+      axios.post("http://localhost:8084/admin/create/1", this.state.adminObb)
       .then(function(response){
         console.log(response);
       });
@@ -69,16 +70,23 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
 
 
 
-  makeAdmin(event){
+async makeAdmin(event){
     event.preventDefault();
     var username = document.getElementById("usernameIN").value;
     var password = document.getElementById("passwordIN").value;
     var firstName = document.getElementById("firstnameIN").value;
     var lastName = document.getElementById("lastnameIN").value;
+    var email = document.getElementById("emailIN").value;
     var isSuper = document.getElementById("isAdmin").checked;
-    var adminObj = {"username":username, "password":password, "firstName":firstName, "lastName":lastName, "superAdmin":isSuper};
-    this.setState({adminObb:adminObj});
-    {this.checkUserExists(username)}
+
+    var adminObj = {"username":username, "password":password, "firstName":firstName, "lastName":lastName, "email":email,"superAdmin":isSuper};
+  await this.setState({
+      adminObb:{"username":username, "password":password, "firstName":firstName, "lastName":lastName, "email":email,"superAdmin":isSuper}
+    });
+    console.log("before");
+    console.log(this.state.adminObb);
+
+    this.checkUserExists(username);
   }
 
     render() {
@@ -91,18 +99,28 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
                 <input id="isAdmin" type="radio" value="Admin" name="rank"/>
                 Admin
               </label>
+              <br/>
               <label>
-                <input type="radio" value="Trainer" name="rank" checked={true}/>
+                <input type="radio" value="Trainer" name="rank"/>
                 Trainer
               </label>
+              <br/>
+              <label>
+                <input type="radio" value="Trainer" name="rank" checked={true}/>
+                User
+              </label>
             </div><br/>
-            <input id="usernameIN" placeholder="username"/>
-            <input id="passwordIN" placeholder="password"/>
-            <input id="firstnameIN" placeholder="firstName"/>
-            <input id="lastnameIN" placeholder="lastName"/>
-            <input id="emailIN" placeholder="email"/>
+            <input id="usernameIN" placeholder="username" className ="form-control" style={{width:'150px'}} />
             <br/>
-            <button onClick={this.makeAdmin}>Create</button>
+            <input id="passwordIN" placeholder="password" className ="form-control" style={{width:'150px'}} />
+            <br/>
+            <input id="firstnameIN" placeholder="firstName" className ="form-control" style={{width:'150px'}} />
+            <br/>
+            <input id="lastnameIN" placeholder="lastName" className ="form-control" style={{width:'150px'}} />
+            <br/>
+            <input id="emailIN" placeholder="email" className ="form-control" style={{width:'150px'}} />
+            <br/>
+            <button onClick={this.makeAdmin} className="btn btn-success">Create</button>
           </form>
         );
       }

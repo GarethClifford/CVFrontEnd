@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { AdminApi, GetAdmin, AdminAddAdmin, AdminDeleteAdmin,
   AdminFlagUser, UserApi, GetAllUsers, DeleteUser } from './constants';
-
+  import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import AdminAddAccount from './AdminAddAccount.js';
 
 class AdminMain extends Component {
@@ -14,7 +14,8 @@ class AdminMain extends Component {
       adminId:this.props.adminId,
       isSuper:true,
       userElements:[],
-      loaded:false
+      loaded:false,
+      userInfo: this.props.array
     }
 
     this.getAdmin = this.getAdmin.bind(this);
@@ -57,7 +58,7 @@ class AdminMain extends Component {
 
   flagUserButton(cell,row){
     return(
-      <button id={row.id} onClick={()=>this.flagUser(row.id)}>Flag</button>
+      <button id={row.id}  onClick={()=>this.flagUser(row.id)}>Flag</button>
     );
   }
 
@@ -69,7 +70,7 @@ class AdminMain extends Component {
 
   deleteButton(cell,row){
     return(
-      <button id={row.id} onClick={()=>this.deleteUser(row.id)}>Delete</button>
+      <button id={row.id} className="btn btn-outline-danger"onClick={()=>this.deleteUser(row.id)}>Delete</button>
     );
   }
 
@@ -78,58 +79,34 @@ class AdminMain extends Component {
       console.log(response);
     });
   }
-
-  getUserData(){
-    var session = this;
-    var resultset;
-    if(this.state.loaded === false){
-      axios.get(UserApi+GetAllUsers).then(function(response){
-        console.log(response);
-        resultset = response.data;
-
-        var userElements = resultset.map(function(user){
-          return (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.firstName}</td>
-                <td>{user.lastName}</td>
-                <td>{user.email}</td>
-              </tr>
-          );
-        });
-
-        session.setState({
-          userElements:userElements,
-          loaded:true
-        });
-      });
-    }
+  componentDidMount() {
+    this.getUserData();
   }
+  getUserData = () => {
+   axios.get(UserApi+GetAllUsers).then((response) => {
+     this.setState({
+       userInfo: response.data
+     });
+   });
+ }
 
   render() {
-    const UserData = () =>{
-      return(
-        <div>
-          <table>
-          <tbody>
-            <tr>
-              <th>ID</th>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
-              <th>Flagged</th>
-            </tr>
-            {this.state.userElements}
-          </tbody>
-          </table>
-        </div>
-      );
-    }
-    {this.getUserData()}
 
     return (
       <div>
-        <UserData/>
+      <div  style={{ width: '75%', margin:'auto' }}>
+      <BootstrapTable data={this.state.userInfo}
+      search
+      striped
+      hover >
+      <TableHeaderColumn dataField='user_id' isKey Column width={'7%'} >ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='username' Column width={'16%'}>Username</TableHeaderColumn>
+      <TableHeaderColumn dataField='firstName' Column width={'16%'}>First name</TableHeaderColumn>
+      <TableHeaderColumn dataField='lastName' Column width={'16%'}>Last name</TableHeaderColumn>
+      <TableHeaderColumn dataField='email' >Email</TableHeaderColumn>
+      <TableHeaderColumn dataField='button' dataFormat={this.deleteButton} Column width={'13%'}> Delete</TableHeaderColumn>
+      </BootstrapTable>
+      </div>
 
         <AdminAddAccount/>
       </div>
