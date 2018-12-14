@@ -8,8 +8,12 @@ const Main = () => (
   <main>
     <Switch>
       <Route exact path='/' component={Home}/>
-      <Route exact path='/u' component={UserMain}/>
-      <Route exact path='/a' component={AdminMain}/>
+      <Route
+      path='/u'
+      render={(props) => <UserMain {...props} isAuthed={true} />}/>
+      <Route path='/a'
+      render= {(routeProps) => (<AdminMain {...routeProps} currentStep={this.state.currentStep}/>)}
+      />
     </Switch>
   </main>
 )

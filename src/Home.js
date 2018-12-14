@@ -23,9 +23,7 @@ class Home extends Component {
   }
 
   changeDisplay(value){
-    console.log("old:"+this.state.displayPage);
     this.setState({displayPage:value});
-    console.log("new:" +this.state.displayPage);
   }
 
 

@@ -9,7 +9,10 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
       super(props);
       this.state = {
         validUser: false,
-        adminObb: []
+        adminObb: [],
+        isUserChecked:false,
+        isAdminChecked:false,
+        isTrainerChecked:false
       }
       this.makeAdmin = this.makeAdmin.bind(this);
       this.checkUserExists = this.checkUserExists.bind(this);
@@ -59,14 +62,24 @@ import { AdminApi, GetAdmin, AdminAddAdmin, GetAllAdmins,
 
   addAccount(){
     if(this.state.validUser===true){
+      console.log("this far?");
+      console.log(document.getElementById('isUser').checked);
+      console.log(this.state.isUserChecked);
+      if(this.state.isUserChecked) {
+        console.log("THIS GETS THIS FAR");
+      axios.post("http://localhost:8081/user/create", this.state.userObb)
+      .then(function(response){
+      });
+    }else if(this.state.isAdminChecked || this.state.isTrainerChecked) {
       axios.post("http://localhost:8084/admin/create/1", this.state.adminObb)
       .then(function(response){
-        console.log(response);
       });
-    }else{
-      alert("bad user");
     }
+  }else {
+    window.alert('Nope');
   }
+  window.location.reload();
+}
 
 
 
@@ -77,15 +90,19 @@ async makeAdmin(event){
     var firstName = document.getElementById("firstnameIN").value;
     var lastName = document.getElementById("lastnameIN").value;
     var email = document.getElementById("emailIN").value;
+    var isUser = document.getElementById("isUser").checked;
     var isSuper = document.getElementById("isAdmin").checked;
-
+    var isTrainer = document.getElementById("isTrainer").checked;
+    var userObj = {"username":username, "password":password, "firstName":firstName, "lastName":lastName, "email":email,"superAdmin":isSuper};
     var adminObj = {"username":username, "password":password, "firstName":firstName, "lastName":lastName, "email":email,"superAdmin":isSuper};
-  await this.setState({
+    await this.setState({
+      isUserChecked:isUser,
+      isAdminChecked:isTrainer,
+      isTrainerChecked:isSuper,
+      userObb:{"username":username, "password":password, "firstName":firstName, "lastName":lastName, "email":email},
       adminObb:{"username":username, "password":password, "firstName":firstName, "lastName":lastName, "email":email,"superAdmin":isSuper}
     });
     console.log("before");
-    console.log(this.state.adminObb);
-
     this.checkUserExists(username);
   }
 
@@ -101,24 +118,24 @@ async makeAdmin(event){
               </label>
               <br/>
               <label>
-                <input type="radio" value="Trainer" name="rank"/>
+                <input id="isTrainer" type="radio" value="Trainer" name="rank"/>
                 Trainer
               </label>
               <br/>
               <label>
-                <input type="radio" value="Trainer" name="rank" checked={true}/>
+                <input id="isUser" type="radio" value="User" name="rank" />
                 User
               </label>
             </div><br/>
-            <input id="usernameIN" placeholder="username" className ="form-control" style={{width:'150px'}} />
+            <input type='text' id="usernameIN" placeholder="Username" className ="form-control" style={{width:'150px'}} />
             <br/>
-            <input id="passwordIN" placeholder="password" className ="form-control" style={{width:'150px'}} />
+            <input type='password' id="passwordIN" placeholder="Password" className ="form-control" style={{width:'150px'}} />
             <br/>
-            <input id="firstnameIN" placeholder="firstName" className ="form-control" style={{width:'150px'}} />
+            <input type='text'id="firstnameIN" placeholder="First name" className ="form-control" style={{width:'150px'}} />
             <br/>
-            <input id="lastnameIN" placeholder="lastName" className ="form-control" style={{width:'150px'}} />
+            <input type='text' id="lastnameIN" placeholder="Last name" className ="form-control" style={{width:'150px'}} />
             <br/>
-            <input id="emailIN" placeholder="email" className ="form-control" style={{width:'150px'}} />
+            <input type='email' id="emailIN" placeholder="Email" className ="form-control" style={{width:'150px'}} />
             <br/>
             <button onClick={this.makeAdmin} className="btn btn-success">Create</button>
           </form>

@@ -29,7 +29,6 @@ class Login extends Component {
   checkLoginFromAdmins(){
     var session = this;
     axios.get(AdminApi+GetAllAdmins).then(function (response){
-      console.log(response.data);
       session.validateCredentials(response.data, 1);
     });
   }
@@ -37,7 +36,6 @@ class Login extends Component {
   checkLoginFromUsers(){
     var session = this;
     axios.get(UserApi+GetAllUsers).then(function (response){
-      console.log(response);
       session.validateCredentials(response.data, 0);
     });
   }
@@ -60,9 +58,10 @@ class Login extends Component {
     var input = [];
     input.push(userInput);
     input.push(passInput);
-    console.log(input);
     return input;
   }
+
+
 
   render() {
 
